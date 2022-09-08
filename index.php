@@ -6,32 +6,39 @@
 
     //search
     $search = $_GET['search'] ?? '';
+
+    // pagination
+
+    // Calculate Total pages
+   $perPage = 3;
+   $stmt = $pdo->prepare('SELECT count(*) FROM post');
+   $stmt->execute();
+   $total_results = $stmt->fetchColumn();
+   $total_pages = ceil($total_results / $perPage);
+
+   // Current page
+   $page = isset($_GET['page']) ? $_GET['page'] : 1;
+   $starting_limit = ($page - 1) * $perPage;
+
     if($search){
         $statement = $pdo->prepare("SELECT * FROM post WHERE title LIKE :keyword OR content LIKE :keyword");
         $statement->bindValue(':keyword', "%$search%");
         $statement->execute();
         $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-    }  else{
+    } elseif ($page){
+         // Query to fetch users
+         $statement = $pdo->prepare("SELECT * FROM post ORDER BY id DESC LIMIT $starting_limit,$perPage");
+         $statement->execute();
 
+         // Fetch all users for current page
+         $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    } else{
           $statement = $pdo->prepare("SELECT * FROM post ORDER BY createdAt DESC");
           $statement->execute();
           $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
     }
-
-    // pagination
-    if(isset($_GET['page']) && $_GET['page'] != ''){
-        $page = $_GET['page'];
-    }else{
-        $page = 1;
-    }
-
-    $records_per_page = 3;
-    $offset = ($page-1)* $records_per_page;
-    $previous_page = $page-1;
-    $next_page = $page+1;
-    $adjacents - "2";
-
 ?>
 
 <?php if(isset($_SESSION['username']) && isset($_SESSION['password'])):?>
@@ -89,23 +96,27 @@
               <hr>
 
           <?php endforeach; ?>
-          <nav aria-label="Page navigation example">
-            <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-        </nav>
+
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+
+                  <?php for ($page = 1; $page <= $total_pages ; $page++):?>
+
+                    <li class="page-item">
+                      <a href='<?php echo "?page=$page"; ?>' class="page-link">  <?php  echo $page; ?></a>
+                    </li>
+
+                  <?php endfor; ?>
+
+
+              </ul>
+          </nav>
+
+
+
+
+
+
       <?php endif; ?>
   </div>
   <div  class="me-4">

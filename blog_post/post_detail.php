@@ -64,7 +64,7 @@
 
     if($row>0){
         $views_existing = $views_count[0]["views"];
-        $views = $_POST['views'] + $views_existing;
+        $views = $views_existing + 1;
         $statement = $pdo->prepare("UPDATE postviews SET postId=:postId, views=:views WHERE postId=$id");
         $statement->bindValue(":postId", $id );
         $statement->bindValue(":views", $views);
@@ -96,7 +96,7 @@
         <p> <?php echo $post[0]['content']; ?> </p>
 
           <small>
-              <?php if($views_existing): ?>
+              <?php if(isset($views_existing)): ?>
                 <i style="margin-right:30px;" ><em style="font-size:15px;">  <?php echo $views_existing; ?> view(s)</em></i>
               <?php endif;?>
               <a style="color: black; text-decoration:none;" href="blog_post/post_detail.php">
@@ -149,7 +149,7 @@
         <?php else: ?>
             <!-- User Not yet logged in -->
             <div class="d-flex">
-            <!-- Comment -->
+              <!-- Comment -->
                 <form style="margin-right: 60px;" action="../user/register.php" method="GET" class="mt-5" class="mb-3">
                     <label for="exampleFormControlTextarea1" class="form-label">Your thoughts:</label>
                     <textarea class="form-control" name="comment" id="exampleFormControlTextarea1" rows="3" placeholder="Your comments" required></textarea>
