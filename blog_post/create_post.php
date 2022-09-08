@@ -54,3 +54,6 @@
  </form>
 
 </div>
+<script>
+  CKEDITOR.replace( 'content' );
+</script>

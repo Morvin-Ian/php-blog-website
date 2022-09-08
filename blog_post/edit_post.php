@@ -19,7 +19,7 @@
 
     if($_SERVER['REQUEST_METHOD']==='POST'){
         $title = $_POST['title'];
-        $content = $_POST['content'];
+        $content = $_POST['ckeditor'];
 
 
         $statement = $pdo->prepare("UPDATE post SET title=:title, updatedAt=:updatedAt, content=:content WHERE id= :id");
@@ -29,7 +29,7 @@
         $statement->bindValue(':id',$id);
         $statement->execute();
 
-        header("Location:../index.php");
+        header("Location:post_detail.php");
       }
 
 
@@ -50,10 +50,15 @@
 
       <div class="mb-2 ">
         <label for="exampleFormControlTextarea1" class="form-label">Content</label>
-        <textarea class="form-control" name="content" rows="4" placeholder="..."><?php echo $content?></textarea required>
+        <textarea class="form-control" name="ckeditor" rows="4" placeholder="..."><?php echo $content?></textarea required>
       </div>
 
       <button type="submit" class="btn btn-primary btn-default"style="padding-left: 1.5rem; padding-right: 1.5rem;">Edit</button>
  </form>
 
 </div>
+
+
+<script>
+  CKEDITOR.replace( 'ckeditor' );
+</script>

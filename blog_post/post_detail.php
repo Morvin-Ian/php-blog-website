@@ -9,8 +9,6 @@
 
     $id = $_POST['id'] ?? null;
 
-
-
     if(!$id){
         header("Location:../");
         exit;
@@ -61,14 +59,17 @@
     $statement->execute();
     $row = $statement->rowCount();
     $views_count = $statement->fetchAll(PDO::FETCH_ASSOC);
-    $views_existing = $views_count[0]["views"];
-    
+
+
+
     if($row>0){
+        $views_existing = $views_count[0]["views"];
         $views = $_POST['views'] + $views_existing;
         $statement = $pdo->prepare("UPDATE postviews SET postId=:postId, views=:views WHERE postId=$id");
         $statement->bindValue(":postId", $id );
         $statement->bindValue(":views", $views);
         $statement->execute();
+        $views_count = $statement->fetchAll(PDO::FETCH_ASSOC);
 
     }
 
@@ -81,31 +82,30 @@
         $statement->bindValue(":views", $views);
         $statement->execute();
 
-
     }
 
 ?>
 
-<div class=" m-4">
+<div class=" m-5">
         <a style="color: black;" href="../index.php">
             <i class="fas fa-arrow-left"></i>
         </a>
 
         <h1><?php echo $post[0]['title']; ?></h1> <small>Updated: <?php echo $post[0]['updatedAt']; ?></small>
 
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate
-        cumque obcaecati necessitatibus eligendi fuga numquam esse facere velit consectetur, a magni
-        veritatis temporibus eaque eveniet ...</p>
+        <p> <?php echo $post[0]['content']; ?> </p>
 
           <small>
-              <i style="margin-right:30px;" class="far fa-eye"><em style="font-size:15px;">  <?php echo $views_existing; ?></em></i>
+              <?php if($views_existing): ?>
+                <i style="margin-right:30px;" ><em style="font-size:15px;">  <?php echo $views_existing; ?> view(s)</em></i>
+              <?php endif;?>
               <a style="color: black; text-decoration:none;" href="blog_post/post_detail.php">
-                <i class="far fa-comment"><em style="font-size:15px;"> <?php echo $comment_rows; ?> </em></i>
+                <i <em style="font-size:15px;"> <?php echo $comment_rows; ?> </em> comment(s)</i>
               </a>
 
           </small>
           <div class="mt-2 mb-2">
-              <img class="rounded-circle" src="<?php echo $author[0]['profile']; ?>" alt="" width='30px' height='30px'>
+             <br>  <img class="rounded-circle" src="<?php echo $author[0]['profile']; ?>" alt="" width='30px' height='30px'>
               <small><em>Written By: <?php echo $author[0]['lastName'] ,' '.$author[0]['firstName']; ?></em></small>
 
           </div>
@@ -136,7 +136,7 @@
                         <button type="submit" name="comment_btn" class="btn btn-dark mt-2">Comment</button>
                     </form>
                     <!-- Subscribe -->
-                    
+
                     <form class="p-3" action="../user/reaction.php"  method="post">
                         <label class="mt-5 mb-2" for="exampleFormControlInput1" class="form-label">Subscribe to Our Newsletters:</label>
                         <input type="hidden" name=id value="<?php echo $postId; ?>" >
@@ -156,7 +156,7 @@
                     <button type="submit" name="comment_btn" class="btn btn-dark mt-2">Comment</button>
                 </form>
                 <!-- Subscribe -->
-                
+
                 <form class="p-3" action="../user/reaction.php"  method="post">
                     <label class="mt-5 mb-2" for="exampleFormControlInput1" class="form-label">Subscribe to Our Newsletters:</label>
                     <input type="hidden" name=id value="<?php echo $postId; ?>" >
@@ -173,16 +173,18 @@
         <?php if(!empty($_SESSION)):?>
             <!-- Logged in and owner of the post -->
             <?php if(strcmp($_SESSION['username'],$author[0]['username'])==0): ?>
+
+
                 <p class="text-center" style="text-decoration: underline;">More of Your Articles </p>
                 <?php foreach($sameAuthor as $detail): ?>
                     <?php if($detail['id']!= $id): ?>
                         <h6><?php echo $detail['title']; ?></h6> <small>
-                        <p><?php  echo $detail['content']; ?>...</p>
+                        <p><?php  echo substr($detail['content'], 0,50); ?>...</p>
                         <form style="display: inline-block;" method="POST" action="post_detail.php">
                             <input type="hidden" name=id value="<?php echo $detail['id']?>" >
                             <button class="btn btn-outline-primary btn-sm"  type="submit">Read More</button>
                         </form> <hr>
-                    <?php endif; ?>    
+                    <?php endif; ?>
                 <?php endforeach; ?>
             <!-- Others -->
             <?php else: ?>
@@ -190,31 +192,32 @@
                 <?php foreach($sameAuthor as $detail): ?>
                     <?php if($detail['id']!= $id): ?>
                         <h6><?php echo $detail['title']; ?></h6> <small>
-                        <p><?php  echo $detail['content']; ?>...</p>
+                        <p><?php  echo substr($detail['content'], 0,50); ?>...</p>
                         <form style="display: inline-block;" method="POST" action="post_detail.php">
                             <input type="hidden" name=id value="<?php echo $detail['id']?>" >
                             <button class="btn btn-outline-primary btn-sm"  type="submit">Read More</button>
                         </form> <hr>
-                    <?php endif; ?>    
+                    <?php endif; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
         <?php else: ?>
             <p class="text-center" style="text-decoration: underline;">More Articles By: <em> <?php echo $author[0]['firstName'] ,' '.$author[0]['lastName']; ?></em></small> </p>
-          
+
                 <?php foreach($sameAuthor as $detail): ?>
                     <?php if($detail['id']!= $id): ?>
                         <h6><?php echo $detail['title']; ?></h6> <small>
-                        <p><?php  echo $detail['content']; ?>...</p>
+                        <p><?php  echo substr($detail['content'], 0,50); ?>...</p>
                         <form style="display: inline-block;" method="POST" action="post_detail.php">
                             <input type="hidden" name=id value="<?php echo $detail['id']?>" >
                             <button class="btn btn-outline-primary btn-sm"  type="submit">Read More</button>
                         </form> <hr>
-                    <?php endif; ?>    
+                    <?php endif; ?>
                 <?php endforeach; ?>
-        
+
          <?php endif; ?>
 
 
         </div>
 
 </div>
+<?php include '../includes/footer.php'?>
