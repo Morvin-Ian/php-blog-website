@@ -18,16 +18,19 @@
 
   if($_SERVER['REQUEST_METHOD']==='POST'){
 
-      $views = null;
       $comments =$_POST['comment'] ?? null;
       $subscriber = $_POST['subscriber'] ?? null;
 
+      if($subscriber != null){
 
-      $statement = $pdo->prepare("INSERT INTO reactions (reactorId, postId, views, comments, subscribers)
-                                  VALUES(:reactorId, :postId,  :views, :comments, :subscribers)");
+
+      }
+
+
+      $statement = $pdo->prepare("INSERT INTO reactions (reactorId, postId, comments, subscribers)
+                                  VALUES(:reactorId, :postId,   :comments, :subscribers)");
       $statement->bindValue(":reactorId", $reactorId );
       $statement->bindValue(":postId", $postId );
-      $statement->bindValue(":views", $views);
       $statement->bindValue(":comments", $comments);
       $statement->bindValue(":subscribers", $subscriber);
       $statement->execute();

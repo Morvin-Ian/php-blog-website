@@ -137,9 +137,8 @@
                     </form>
                     <!-- Subscribe -->
 
-                    <form class="p-3" action="../user/reaction.php"  method="post">
+                    <form class="p-3" action="../user/mail.php"  method="post">
                         <label class="mt-5 mb-2" for="exampleFormControlInput1" class="form-label">Subscribe to Our Newsletters:</label>
-                        <input type="hidden" name=id value="<?php echo $postId; ?>" >
                         <input type="email" name="subscriber" class="form-control" id="exampleFormControlInput1" placeholder="example.gmail.com" required>
                         <button style="margin-top: 40px;" type="submit"name="subscriber_btn"  class="btn btn-dark">Subscribe</button>
 
