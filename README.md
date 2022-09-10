@@ -29,6 +29,6 @@ DBNAME Blog
     subscribers
 
 ### postviews -
-  id
-  postId
-  views
+    id
+    postId
+    views
