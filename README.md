@@ -1,12 +1,12 @@
 # PHP-Blog
 PHP-Blog with extensive use of sessions
-## Database structure
+# Database structure
 DBNAME Blog
 
 ## TABLES
-### user
-  ### id
-  ### firstName
+### user -
+  id
+  firstName
   lastName
   username
   email
@@ -14,7 +14,7 @@ DBNAME Blog
   registeredAt
   profile
 
-post
+### post -
   id
   authorId
   title
@@ -22,13 +22,13 @@ post
   updatedAt
   content
 
-reactions
+### reactions -
     id
     postId
     reactorId
     subscribers
 
-postviews
+### postviews -
   id
   postId
   views
