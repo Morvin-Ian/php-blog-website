@@ -4,31 +4,31 @@ PHP-Blog with extensive use of sessions
 DBNAME Blog
 
 ## TABLES
-### user -
-  id
-  firstName
-  lastName
-  username
-  email
-  passwordHash
-  registeredAt
-  profile
+### user 
+    id
+    firstName
+    lastName
+    username
+    email
+    passwordHash
+    registeredAt
+    profile
 
-### post -
-  id
-  authorId
-  title
-  createdAt
-  updatedAt
-  content
+### post
+    id
+    authorId
+    title
+    createdAt
+    updatedAt
+    content
 
-### reactions -
+### reactions
     id
     postId
     reactorId
     subscribers
 
-### postviews -
+### postviews
     id
     postId
     views
