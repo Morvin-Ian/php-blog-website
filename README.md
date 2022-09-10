@@ -3,10 +3,10 @@ PHP-Blog with extensive use of sessions
 ## Database structure
 DBNAME Blog
 
-TABLES
-user
-  id
-  firstName
+## TABLES
+### user
+  ### id
+  ### firstName
   lastName
   username
   email
