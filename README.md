@@ -1,9 +1,13 @@
 # PHP-Blog
-PHP-Blog with extensive use of sessions
-# Database structure
-DBNAME Blog
+### PHP-Blog with extensive use of sessions
+### Sending Emails
+### Tracking views and comments
 
-## TABLES
+
+# Database structure
+Database name 'Blog'
+
+# TABLES
 ### user 
     id
     firstName
