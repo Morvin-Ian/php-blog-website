@@ -2,7 +2,7 @@
     include 'includes/header.php';
     include 'includes/navbar.php';
     include 'includes/database.php';
-    session_start();
+    // session_start();
 
     //search
     $search = $_GET['search'] ?? '';
